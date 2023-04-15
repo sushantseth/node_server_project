@@ -1,5 +1,5 @@
 //these are top level code which is executed only once when the server starts.
-//in case we need to read the file once, the readFile can be executed at the top level of the code
+//in case we need to read the file once, the readFileSync can be executed at the top level of the code
 const fs= require("fs")
 const http = require('http')
 const url = require('url')
@@ -23,7 +23,7 @@ const tempProduct = fs.readFileSync(`${__dirname}/templates/product.html`,'utf-8
 
 // //non-blocking async way
 // fs.readFile('./txt/start.txt','utf-8', (err,data1)=> {
-//     if(err) return console.log("Error")
+//     if(err) return console.log("Error") 
 //     fs.readFile(`./txt/${data1}.txt`,'utf-8',(err,data2)=>{
 //         fs.writeFile('./txt/asyncOutput',data2,(err)=>{
 //             console.log('asyncOutput created and data added')
@@ -31,7 +31,6 @@ const tempProduct = fs.readFileSync(`${__dirname}/templates/product.html`,'utf-8
 //     })
 // })
 // console.log("after")
-
 
 ////////////////////////////////////////////////////creating server
 
@@ -41,7 +40,6 @@ const server = http.createServer((req,res)=>{
   
     //url.parse provides us with the url object with all its properties
     const {query, pathname} = url.parse(req.url, true)
-
     //overview path
     if(pathname === "/overview" || pathname === "/"){
        const dynamicCard =  data.map((d)=>{
@@ -53,14 +51,13 @@ const server = http.createServer((req,res)=>{
     }
 
     //product path
-    else if(pathname === "/product"){
+    else if(pathname === "/product"){``
        let filteredData =  data.filter((d)=>{
             return d.id == query.q
         })
        let output =  replacetemplate(tempProduct,filteredData[0])
         res.end(output)
     }
-
     //api path
     else if (pathname === "/api"){
         res.end(dataObj)
